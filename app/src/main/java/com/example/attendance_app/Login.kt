@@ -1,11 +1,17 @@
 package com.example.attendance_app
 
+import android.app.ActionBar
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -20,9 +26,9 @@ class Login : AppCompatActivity() {
     private lateinit var database: DatabaseReference
 
     private lateinit var sEmail: TextInputEditText
-    private lateinit var sPassword : TextInputEditText
-    private lateinit var btn : Button
-    private lateinit var resetPassword : TextView
+    private lateinit var sPassword: TextInputEditText
+    private lateinit var btn: Button
+    private lateinit var resetPassword: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,16 +46,16 @@ class Login : AppCompatActivity() {
         sPassword = findViewById<TextInputEditText>(R.id.password)
 
         resetPassword.setOnClickListener {
-            val intent = Intent(this@Login,ResetPassword::class.java)
+            val intent = Intent(this@Login, ResetPassword::class.java)
             startActivity(intent)
         }
 
-        new_user_text.setOnClickListener{
-            val intent = Intent(this@Login,CreateAccount::class.java)
+        new_user_text.setOnClickListener {
+            val intent = Intent(this@Login, CreateAccount::class.java)
             startActivity(intent)
         }
 
-        btn.setOnClickListener{
+        btn.setOnClickListener {
 //            val user = findViewById<TextInputEditText>(R.id.userid).text.toString()
 //            val password = findViewById<TextInputEditText>(R.id.password).text.toString()
 //            if(user=="Hello" && password == "123"){
@@ -59,14 +65,17 @@ class Login : AppCompatActivity() {
 //                intent = Intent(this@Login,StudentUI::class.java)
 //            }
 //            startActivity(intent)
-
-
-            try{
+            try {
                 val email = sEmail.text.toString().trim()
                 val password = sPassword.text.toString().trim()
-                if(email.isEmpty() || password.isEmpty()){
+                if (email.isEmpty() || password.isEmpty()) {
                     throw IOException("Please Enter Required Information")
                 }
+                val mDialogView =
+                    LayoutInflater.from(this@Login).inflate(R.layout.loading_animation, null)
+                val mBuilder = AlertDialog.Builder(this@Login, R.style.AlertDialog_Theme)
+                    .setView(mDialogView)
+                val mAlertDialog = mBuilder.show()
                 mAuth!!.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(
                         this
@@ -74,27 +83,31 @@ class Login : AppCompatActivity() {
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
                             val verified = mAuth.currentUser?.isEmailVerified
-                            if(verified == true){
+                            if (verified == true) {
                                 val user = mAuth!!.currentUser
+                                mAlertDialog.dismiss()
                                 updateUI(user)
-                            }
-                            else{
-                                Toast.makeText(this,"Please Verify Your Email Address First.",
-                                    Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(
+                                    this, "Please Verify Your Email Address First.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
 
                         } else {
                             // If sign in fails, display a message to the user.
+
                             Toast.makeText(
                                 this@Login, "Authentication failed.",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            mAlertDialog.dismiss()
 //                    updateUI(null)
                         }
 
                         // ...
                     }
-            }catch(e: IOException){
+            } catch (e: IOException) {
                 Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show()
             }
 
@@ -106,7 +119,7 @@ class Login : AppCompatActivity() {
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
         database.child("User").child(userId).get().addOnSuccessListener {
             val role = it.child("role").value.toString()
-            when(role){
+            when (role) {
                 "user" -> {
                     val intent = Intent(this@Login, StudentUI::class.java)
                     startActivity(intent)
@@ -117,7 +130,7 @@ class Login : AppCompatActivity() {
                 }
             }
 
-        }.addOnFailureListener{
+        }.addOnFailureListener {
 
         }
 

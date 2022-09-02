@@ -13,14 +13,19 @@
         <item name="colorAccent">@color/white</item>
     </style>
 
-<!--    <style name="ToolbarWithBackButtonStyle" parent="ToolbarStyle">-->
-<!--        <item name="navigationIcon">@drawable/ic_arrow_back</item>-->
-<!--        <item name="iconTint">@color/toolbar_menu_color</item>-->
-<!--    </style>-->
+    <style name="AlertDialog.Theme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:colorBackground">@android:color/transparent</item>
+    </style>
 
-<!--    <style name="ButtonStyle" parent="Widget.AppCompat.Button.Borderless">-->
-<!--        <item name="android:textColor">@color/color_button_text</item>-->
-<!--        <item name="android:background">@drawable/background_button</item>-->
-<!--    </style>-->
+
+    <!--    <style name="ToolbarWithBackButtonStyle" parent="ToolbarStyle">-->
+    <!--        <item name="navigationIcon">@drawable/ic_arrow_back</item>-->
+    <!--        <item name="iconTint">@color/toolbar_menu_color</item>-->
+    <!--    </style>-->
+
+    <!--    <style name="ButtonStyle" parent="Widget.AppCompat.Button.Borderless">-->
+    <!--        <item name="android:textColor">@color/color_button_text</item>-->
+    <!--        <item name="android:background">@drawable/background_button</item>-->
+    <!--    </style>-->
 
 </resources>

@@ -6,15 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".StudentUI">
 
-    <ImageView
-        android:id="@+id/scanner_image"
+<!--    <ImageView-->
+<!--        android:id="@+id/scanner_image"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="500dp"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/btn_scan"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:src="@drawable/scanner_image"/>-->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/scanAnimation"
         android:layout_width="wrap_content"
-        android:layout_height="500dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btn_scan"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/scanner_image"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_scan"
+        app:lottie_rawRes="@raw/scan_animation"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true" />
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_scan"
         android:layout_width="wrap_content"
@@ -24,7 +35,7 @@
         android:paddingHorizontal="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/scanner_image"
+        app:layout_constraintTop_toBottomOf="@id/scanAnimation"
         app:layout_constraintStart_toStartOf="parent"
         />
 
