@@ -1,0 +1,26 @@
+<resources>
+
+    <style name="Widget.Theme.CapstoneProject.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="Widget.Theme.CapstoneProject.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+    </style>
+
+    <style name="SeekBarTheme">
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+<!--    <style name="ToolbarWithBackButtonStyle" parent="ToolbarStyle">-->
+<!--        <item name="navigationIcon">@drawable/ic_arrow_back</item>-->
+<!--        <item name="iconTint">@color/toolbar_menu_color</item>-->
+<!--    </style>-->
+
+<!--    <style name="ButtonStyle" parent="Widget.AppCompat.Button.Borderless">-->
+<!--        <item name="android:textColor">@color/color_button_text</item>-->
+<!--        <item name="android:background">@drawable/background_button</item>-->
+<!--    </style>-->
+
+</resources>
