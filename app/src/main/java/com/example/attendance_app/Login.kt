@@ -2,6 +2,7 @@ package com.example.attendance_app
 
 import android.app.ActionBar
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -19,6 +21,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.io.IOException
+import com.example.attendance_app.R.raw.dark_loading_text
 
 class Login : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
@@ -71,11 +74,19 @@ class Login : AppCompatActivity() {
                 if (email.isEmpty() || password.isEmpty()) {
                     throw IOException("Please Enter Required Information")
                 }
-                val mDialogView =
-                    LayoutInflater.from(this@Login).inflate(R.layout.loading_animation, null)
+                val mDialogView = LayoutInflater.from(this@Login).inflate(R.layout.loading_animation, null)
                 val mBuilder = AlertDialog.Builder(this@Login, R.style.AlertDialog_Theme)
                     .setView(mDialogView)
-                val mAlertDialog = mBuilder.show()
+
+                val mAlertDialog = mBuilder.show().apply{
+                    window?.setBackgroundDrawable(null)
+                }
+
+                val loadingText = mDialogView.findViewById<LottieAnimationView>(R.id.loadingText)
+
+                if(isDarkModeOn()){
+                    loadingText.setAnimation(dark_loading_text)
+                }
                 mAuth!!.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(
                         this
@@ -134,5 +145,10 @@ class Login : AppCompatActivity() {
 
         }
 
+    }
+
+    private fun isDarkModeOn(): Boolean {
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
 }
