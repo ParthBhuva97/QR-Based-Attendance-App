@@ -1,19 +1,19 @@
 package com.example.attendance_app
 
-import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import com.budiyev.android.codescanner.AutoFocusMode
-import com.budiyev.android.codescanner.CodeScanner
-import com.budiyev.android.codescanner.CodeScannerView
-import com.budiyev.android.codescanner.DecodeCallback
-import com.example.attendance_app.R
-import com.budiyev.android.codescanner.ScanMode
+import androidx.appcompat.app.AppCompatActivity
+import com.airbnb.lottie.LottieAnimationView
+import com.budiyev.android.codescanner.*
+import com.example.attendance_app.R.raw.dark_done
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -21,6 +21,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.scottyab.aescrypt.AESCrypt
 import java.time.LocalTime
+
 
 class QRScannerUI : AppCompatActivity() {
     private var maxZoom: Int = 0
@@ -107,8 +108,24 @@ class QRScannerUI : AppCompatActivity() {
                                         if(valid == "true"){
                                             if(et_code.text.toString()==code){
                                                 database.child("Attendance").child(dataList[2]).child(dataList[1]).child(dataList[0]).child(userId).setValue(student)
-                                                Toast.makeText(this@QRScannerUI,"Your presence has been marked",Toast.LENGTH_SHORT).show()
                                                 mAlertDialog.dismiss()
+                                                val dialogView = LayoutInflater.from(this@QRScannerUI).inflate(R.layout.marked_animation,null)
+                                                val builder = AlertDialog.Builder(this@QRScannerUI)
+                                                    .setView(dialogView)
+                                                val alertDialog = builder.show().apply{
+                                                    window?.setBackgroundDrawable(null)
+                                                }
+                                                val done = dialogView.findViewById<LottieAnimationView>(R.id.done)
+                                                if(isDarkModeOn()){
+                                                    done.setAnimation(dark_done)
+                                                }
+                                                Handler(Looper.getMainLooper()).postDelayed(
+                                                    {
+                                                        alertDialog.dismiss()
+                                                    },
+                                                    3000
+                                                )
+
                                             }
                                             else{
                                                 Toast.makeText(this@QRScannerUI, "Invalid Verification Code", Toast.LENGTH_SHORT).show()
@@ -211,6 +228,11 @@ class QRScannerUI : AppCompatActivity() {
     override fun onPause() {
         codeScanner.releaseResources()
         super.onPause()
+    }
+
+    private fun isDarkModeOn(): Boolean {
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
 
 }
