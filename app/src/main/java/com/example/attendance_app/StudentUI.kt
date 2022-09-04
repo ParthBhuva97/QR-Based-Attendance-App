@@ -1,25 +1,31 @@
 package com.example.attendance_app
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.airbnb.lottie.LottieAnimationView
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import com.karumi.dexter.listener.single.PermissionListener
-import java.util.jar.Manifest
+import com.example.attendance_app.R.raw.dark_scanner
 
 class StudentUI : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_student_ui)
         val btn = findViewById<Button>(R.id.btn_scan)
+        val scanAnimation = findViewById<LottieAnimationView>(R.id.scanAnimation)
+
+        if(isDarkModeOn()){
+            scanAnimation.setAnimation(dark_scanner)
+        }
+
+
 
 //----------------------------------Old Horizontal Orientation Barcode Scanner ---------------------------
 // Warning : Implementation may not be added in Gradle
@@ -76,5 +82,10 @@ class StudentUI : AppCompatActivity() {
             }).withErrorListener{
                 Toast.makeText(this, it.name, Toast.LENGTH_SHORT).show()
             }.check()
+    }
+
+    private fun isDarkModeOn(): Boolean {
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
 }
