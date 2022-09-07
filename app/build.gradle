@@ -43,7 +43,7 @@ dependencies {
     implementation 'com.isseiaoki:simplecropview:1.1.8'
     implementation 'com.github.yuriy-budiyev:code-scanner:2.3.2'
     implementation 'com.google.firebase:firebase-database-ktx:20.0.6'
-    implementation 'com.google.firebase:firebase-auth-ktx:21.0.7'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.0.8'
     implementation "com.airbnb.android:lottie:5.2.0"
     implementation 'com.karumi:dexter:6.2.3'
     testImplementation 'junit:junit:4.13.2'

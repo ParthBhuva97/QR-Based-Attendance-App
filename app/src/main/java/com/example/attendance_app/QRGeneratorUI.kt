@@ -6,14 +6,13 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import com.google.android.material.datepicker.MaterialDatePicker.Builder.datePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -26,7 +25,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.time.LocalTime
-import java.util.*
 
 class QRGeneratorUI : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
@@ -52,23 +50,23 @@ class QRGeneratorUI : AppCompatActivity() {
             database.child("User").child(userId).get().addOnSuccessListener {
                 adminId = it.child("firstname").value.toString()
                 val date = findViewById<TextInputEditText>(R.id.date)
-                date.setOnClickListener {
-                    val mDialogView = LayoutInflater.from(this@QRGeneratorUI).inflate(R.layout.datepicker,null)
-                    val mBuilder = AlertDialog.Builder(this@QRGeneratorUI).setView(mDialogView)
-                    val datePicker = mDialogView.findViewById<DatePicker>(R.id.datePicker)
-                    val today = Calendar.getInstance()
-
-                    val mAlertDialog = mBuilder.show()
-                    datePicker.init(today.get(Calendar.YEAR), today.get(Calendar.MONTH),
-                        today.get(Calendar.DAY_OF_MONTH)
-
-                    ) { view, year, month, day ->
-                        val month = month + 1
-                        dateToday = "$day-$month-$year"
-                    }
-                    date.setText(dateToday)
-                    mAlertDialog.dismiss()
-                }
+//                date.setOnClickListener {
+//                    val mDialogView = LayoutInflater.from(this@QRGeneratorUI).inflate(R.layout.datepicker,null)
+//                    val mBuilder = AlertDialog.Builder(this@QRGeneratorUI).setView(mDialogView)
+//                    val datePicker = mDialogView.findViewById<DatePicker>(R.id.datePicker)
+//                    val today = Calendar.getInstance()
+//
+//                    val mAlertDialog = mBuilder.show()
+//                    datePicker.init(today.get(Calendar.YEAR), today.get(Calendar.MONTH),
+//                        today.get(Calendar.DAY_OF_MONTH)
+//
+//                    ) { view, year, month, day ->
+//                        val month = month + 1
+//                        dateToday = "$day-$month-$year"
+//                    }
+//                    date.setText(dateToday)
+//                    mAlertDialog.dismiss()
+//                }
                 val classname = findViewById<TextInputEditText>(R.id.department)
                 val time = LocalTime.now()
                 try{
@@ -124,7 +122,7 @@ class QRGeneratorUI : AppCompatActivity() {
 
                         // Callback function, fired on regular interval
                         override fun onTick(millisUntilFinished: Long) {
-                            counter.text = "seconds remaining: ${millisUntilFinished / 1000}"
+                            counter.text = "Seconds remaining: ${millisUntilFinished / 1000}"
                         }
 
                         // Callback function, fired
