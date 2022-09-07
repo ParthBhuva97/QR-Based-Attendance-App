@@ -1,11 +1,15 @@
 package com.example.attendance_app
 
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -51,6 +55,19 @@ class CreateAccount : AppCompatActivity() {
                 if(email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()){
                     throw IOException("Please Enter Required Information")
                 }
+                val mDialogView = LayoutInflater.from(this@CreateAccount).inflate(R.layout.loading_animation, null)
+                val mBuilder = AlertDialog.Builder(this@CreateAccount, R.style.AlertDialog_Theme)
+                    .setView(mDialogView)
+
+                val mAlertDialog = mBuilder.show().apply{
+                    window?.setBackgroundDrawable(null)
+                }
+
+                val loadingText = mDialogView.findViewById<LottieAnimationView>(R.id.loadingText)
+
+                if(isDarkModeOn()){
+                    loadingText.setAnimation(R.raw.dark_loading_text)
+                }
                 if(password == confirmPassword){
                     mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(
@@ -67,14 +84,15 @@ class CreateAccount : AppCompatActivity() {
                                     ?.addOnFailureListener {
                                         Toast.makeText(this,it.toString(), Toast.LENGTH_SHORT).show()
                                     }
-
+                                mAlertDialog.dismiss()
                                 updateUI()
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Toast.makeText(
-                                    this, "Authentication failed.",
+                                    this, "Account Creation failed.",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                mAlertDialog.dismiss()
                                 updateUI()
                             }
 
@@ -109,6 +127,10 @@ class CreateAccount : AppCompatActivity() {
     private fun updateUI() {
         val intent = Intent(this@CreateAccount, Login::class.java)
         startActivity(intent)
+    }
 
+    private fun isDarkModeOn(): Boolean {
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
 }
